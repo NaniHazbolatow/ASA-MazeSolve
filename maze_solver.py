@@ -133,35 +133,35 @@ class MazeSolver:
 
         path_len = len(path_coords)
 
-        plt.savefig(f"{self.num_rows}x{self.num_cols}sol.png", dpi=300, bbox_inches="tight")
+        plt.savefig(f"solutions/{self.num_rows}x{self.num_cols}sol.png", dpi=300, bbox_inches="tight")
         title = f"Maze Solution (Path Length: {path_len})"
         ax.set_title(title, fontsize=self.num_cols / 2)
         plt.tight_layout()
         plt.show()
 
 
-with open ("maze4x6.pckl", "rb") as f:
+with open ("mazes/maze4x6.pckl", "rb") as f:
   maze = pickle.load(f)
   solve = MazeSolver(maze)
   solve.plot_path()
 
-with open ("maze5x5.pckl", "rb") as f:
+with open ("mazes/maze5x5.pckl", "rb") as f:
   maze = pickle.load(f)
   solve = MazeSolver(maze)
   solve.plot_path()
 
-with open ("maze9x9.pckl", "rb") as f:
+with open ("mazes/maze9x9.pckl", "rb") as f:
   maze = pickle.load(f)
   solve = MazeSolver(maze)
   solve.plot_path()
 
 
-with open ("maze10x10.pckl", "rb") as f:
+with open ("mazes/maze10x10.pckl", "rb") as f:
   maze = pickle.load(f)
   solve = MazeSolver(maze)
   solve.plot_path()
 
-with open ("maze100x100.pkl", "rb") as f:
+with open ("mazes/maze100x100.pkl", "rb") as f:
   maze = pickle.load(f)
   solve = MazeSolver(maze)
   solve.plot_path()
