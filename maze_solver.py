@@ -155,7 +155,6 @@ with open ("mazes/maze9x9.pckl", "rb") as f:
   solve = MazeSolver(maze)
   solve.plot_path()
 
-
 with open ("mazes/maze10x10.pckl", "rb") as f:
   maze = pickle.load(f)
   solve = MazeSolver(maze)
