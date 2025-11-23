@@ -5,6 +5,7 @@ from typing import List, Tuple, Deque, Dict, Optional
 from collections import deque
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
+from pathlib import Path
 
 # Coord data object: (nrow, ncol)
 Coord = Tuple[int, int]
@@ -47,8 +48,8 @@ class MazeSolver:
 
     def is_free(self, row: int, col: int):
         return (
-            0 <= row < self.num_rows and  # are we within row bounds?
-            0 <= col <= self.num_cols and # are we within col bounds?
+            0 < row <= self.num_rows and  # are we within row bounds?
+            0 < col <= self.num_cols and # are we within col bounds?
             self.maze[row, col]   # maze is a boolean array, so True says we're open
             )
     
@@ -60,13 +61,13 @@ class MazeSolver:
 
         while queue:
             row, col = queue.popleft()
-
+        
             if (row, col) == self.goal: # exit condition of while loop is when we find the goal
                 goal_found = True
                 break
-
+            # we construct a tree
             for delta_row, delta_col in self.DIRECTIONS: # van neumann neighbourhood
-                next_row, next_col = row + delta_row, col + delta_col # gives us option chain
+                next_row, next_col = row + delta_row, col + delta_col # gives us option chain for our next step
                 neighbor = (next_row, next_col)
 
                 if self.is_free(next_row, next_col) and neighbor not in self.parent: #we shouldn't go back up and it should be free
@@ -116,11 +117,6 @@ class MazeSolver:
         # Display the array as an image
         ax.imshow(plot_array, cmap=cmap)
 
-        # grid lines for cell boundaries
-        #ax.set_xticks(np.arange(self.num_cols + 1) - 0.5, minor=False)
-        #ax.set_yticks(np.arange(self.num_rows + 1) - 0.5, minor=False)
-        #ax.grid(which="major", color='k', linestyle='-', linewidth=0.5)
-
         # Remove tick labels and borders for a cleaner look
         ax.set_xticklabels([])
         ax.set_yticklabels([])
@@ -139,28 +135,15 @@ class MazeSolver:
         plt.tight_layout()
         plt.show()
 
+folder = Path("mazes")
+out_dir = Path("solved")
+out_dir.mkdir(exist_ok=True)
 
-with open ("mazes/maze4x6.pckl", "rb") as f:
-  maze = pickle.load(f)
-  solve = MazeSolver(maze)
-  solve.plot_path()
+for file in folder.glob("*"):
+    if not file.suffix.lower() in (".pkl", ".pckl"):
+        continue
 
-with open ("mazes/maze5x5.pckl", "rb") as f:
-  maze = pickle.load(f)
-  solve = MazeSolver(maze)
-  solve.plot_path()
-
-with open ("mazes/maze9x9.pckl", "rb") as f:
-  maze = pickle.load(f)
-  solve = MazeSolver(maze)
-  solve.plot_path()
-
-with open ("mazes/maze10x10.pckl", "rb") as f:
-  maze = pickle.load(f)
-  solve = MazeSolver(maze)
-  solve.plot_path()
-
-with open ("mazes/maze100x100.pkl", "rb") as f:
-  maze = pickle.load(f)
-  solve = MazeSolver(maze)
-  solve.plot_path()
+    with open(file, "rb") as f:
+        maze = pickle.load(f)
+        solve = MazeSolver(maze)
+        solve.plot_path()
